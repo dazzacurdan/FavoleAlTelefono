@@ -18,7 +18,7 @@ lock_play = threading.Lock()
 needToPrint = 0
 count = 0
 PIN_INPUT = 2
-BUTTON_PIN = 13
+BUTTON_PIN = 27
 TEL_NUM_LENGTH = 8
 GPIO.setup(PIN_INPUT, GPIO.IN)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -88,10 +88,10 @@ def soundHandling(lock,stop_event):
                 isPlay = False
             if _wrongNumber:
                 if not isPlay:
-                    print("Play wrongNumber")
+                    #print("Play wrongNumber")
                     isPlay = True
                     playLoop(wrongNumber_ch,wrongNumber,waitPlay)
-                    print("Finish play wrongNumber")
+                    #print("Finish play wrongNumber")
                     isPlay = False
                 else:
                     pass
@@ -187,18 +187,24 @@ try:
 
     while True:
         if GPIO.input(BUTTON_PIN) == False:
-            print("Lock isWrongNumber")
+            #print("Lock isWrongNumber")
             lock_play.acquire()
             try:
                 buttonUP = False
                 isWrongNumber = False
             finally:
-                print("Release isWrongNumber")
+                #print("Release isWrongNumber")
                 lock_play.release()
             
             if len(targetProject) != 0:
                 print("reset number %s" % (targetProject))
                 targetProject=""
+                lock_play.acquire()
+                try:
+                    numberIsNotInsered = True
+                finally:
+                    #print("Release numberIsNotInsered")
+                    lock_play.release()
         else:
 
             #print("Lock buttonUP")
@@ -227,6 +233,7 @@ try:
                     number = 0
 
                     lenTargetProject = len(targetProject)
+                    print("lenTargetProject %d" % (lenTargetProject))
                     if lenTargetProject > 0:
                         #print("Lock numberIsNotInsered")
                         lock_play.acquire()
@@ -235,7 +242,7 @@ try:
                         finally:
                             #print("Release numberIsNotInsered")
                             lock_play.release()
-                    elif( len(targetProject) == TEL_NUM_LENGTH):
+                    if( len(targetProject) == TEL_NUM_LENGTH):
                         print(targetProject)
                         if( targetProject.find("11") > 5):
                             path = videoPaths(0)
