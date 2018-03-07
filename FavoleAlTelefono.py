@@ -1,3 +1,6 @@
+#
+#NB use python3 to avoid issue with osc
+#
 import argparse
 import threading
 import RPi.GPIO as GPIO, time
@@ -26,7 +29,6 @@ GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 lastState = GPIO.LOW
 trueState = GPIO.LOW
 lastStateChangeTime = 0
-cleared = 0
 
 dialHasFinishedRotatingAfterMs = 100000 #100 in millisecond 
 debounceDelay = 10000 # 10 in millisecond
@@ -104,11 +106,13 @@ def soundHandling(lock,stop_event):
             #    wrongNumber = False #NB LOCK
             #else:
             #    pass
+    print("Play thread Loop exit")
 
 def millis():
 	return datetime.now().microsecond
+    #return int(round(time.time() * 1000))
 
-def event_lock_holder(lock,delay):
+def event_lock_holder(lock,events,delay):
     print('Lock.Starting')
     print('events is: {0}'.format(events))
     print('delay is: {0}'.format(delay))    
@@ -205,7 +209,7 @@ try:
                 finally:
                     #print("Release numberIsNotInsered")
                     lock_play.release()
-        else:
+        elif not isWrongNumber:
 
             #print("Lock buttonUP")
             lock_play.acquire()
@@ -223,9 +227,9 @@ try:
                     # if it's only just finished being dialed, we need to send the number down the serial
                     # line and reset the count. We mod the count by 10 because '0' will send 10 pulses.
                     
-                    number = (count%10)-1
-                    if(number < 0):
-                        number = 9
+                    number = (count%10)
+                    #if(number < 0):
+                    #    number = 9
                     targetProject += str(number)
                     print("Count is %d ,Target project is %s" % (count, targetProject))
                     path = ""
@@ -233,7 +237,7 @@ try:
                     number = 0
 
                     lenTargetProject = len(targetProject)
-                    print("lenTargetProject %d" % (lenTargetProject))
+                    #print("lenTargetProject %d" % (lenTargetProject))
                     if lenTargetProject > 0:
                         #print("Lock numberIsNotInsered")
                         lock_play.acquire()
@@ -242,7 +246,7 @@ try:
                         finally:
                             #print("Release numberIsNotInsered")
                             lock_play.release()
-                    if( len(targetProject) == TEL_NUM_LENGTH):
+                    if( lenTargetProject == TEL_NUM_LENGTH):
                         print(targetProject)
                         if( targetProject.find("11") > 5):
                             path = videoPaths(0)
@@ -287,24 +291,28 @@ try:
 
                         print("TargetProject reset %s" % (targetProject))  
                         targetProject = ""
+                        lock_play.acquire()
+                        try:
+                            numberIsNotInsered = True
+                        finally:
+                            lock_play.release()
 
                         if sendMessage:
                             print( "/play " + path[0] )
                             client.send_message("/play", path[0] )
                             client_pc.send_message("/play", number)
-                            threading.Thread(target=event_lock_holder, args=(lock,path[1]), name='eventLockHolder').start()
+                            threading.Thread(target=event_lock_holder, args=(lock,events,path[1]), name='eventLockHolder').start()
                         else:
-                            print("Lock isWrongNumber")
+                            #print("Lock isWrongNumber")
                             lock_play.acquire()
                             try:
                                 isWrongNumber = True
                             finally:
-                                print("Release isWrongNumber")
+                                #print("Release isWrongNumber")
                                 lock_play.release()
 
                     needToPrint = 0
                     count = 0
-                    cleared = 0
 
             if (reading != lastState):
                 lastStateChangeTime = millis()
@@ -322,4 +330,6 @@ try:
 
 except (KeyboardInterrupt, SystemExit):
     stop_event.set()
+    print("Start Closing")
     sound_thread.join()
+    print("Closed")
