@@ -5,6 +5,7 @@ import argparse
 import threading
 import RPi.GPIO as GPIO, time
 from datetime import datetime
+from enum import Enum
 
 import pygame
 from pygame import mixer
@@ -33,6 +34,21 @@ lastStateChangeTime = 0
 dialHasFinishedRotatingAfterMs = 100000 #100 in millisecond 
 debounceDelay = 10000 # 10 in millisecond
 
+class Sound(Enum):
+    FREE_LINE = 0
+    WRONG_LINE = 1
+    AUDIO_0 = 2
+    AUDIO_1 = 3
+    AUDIO_2 = 4
+    AUDIO_3 = 5
+    AUDIO_4 = 6
+    AUDIO_5 = 7
+    AUDIO_6 = 8
+    AUDIO_7 = 9
+    AUDIO_8 = 10
+    AUDIO_9 = 11
+    NO_SOUND = 12
+
 def playLoop(channel,content,waitPlay):
     channel.play(content)
     while channel.get_busy():
@@ -42,7 +58,7 @@ def playLoop(channel,content,waitPlay):
 
 def soundHandling(lock,stop_event):
     print("Initialize play thread")
-    waitPlay = 1000
+    WAIT_PLAY = 1000
     #set up the mixer
     freq = 44100     # audio CD quality
     bitsize = -16    # unsigned 16 bit
@@ -60,6 +76,46 @@ def soundHandling(lock,stop_event):
     wrongNumber_ch = pygame.mixer.Channel(2)
     wrongNumber.set_volume(1.0)
 
+    audio0 = pygame.mixer.Sound("audio0.wav")
+    audio0_ch = pygame.mixer.Channel(3)
+    audio0.set_volume(1.0)
+
+    audio1 = pygame.mixer.Sound("audio1.wav")
+    audio1_ch = pygame.mixer.Channel(4)
+    audio1.set_volume(1.0)
+
+    audio2 = pygame.mixer.Sound("audio2.wav")
+    audio2_ch = pygame.mixer.Channel(5)
+    audio2.set_volume(1.0)
+
+    audio3 = pygame.mixer.Sound("audio3.wav")
+    audio3_ch = pygame.mixer.Channel(6)
+    audio3.set_volume(1.0)
+
+    audio4 = pygame.mixer.Sound("audio4.wav")
+    audio4_ch = pygame.mixer.Channel(7)
+    audio4.set_volume(1.0)
+
+    audio5 = pygame.mixer.Sound("audio5.wav")
+    audio5_ch = pygame.mixer.Channel(8)
+    audio5.set_volume(1.0)
+
+    audio6 = pygame.mixer.Sound("audio6.wav")
+    audio6_ch = pygame.mixer.Channel(9)
+    audio6.set_volume(1.0)
+
+    audio7 = pygame.mixer.Sound("audio7.wav")
+    audio7_ch = pygame.mixer.Channel(10)
+    audio7.set_volume(1.0)
+
+    audio8 = pygame.mixer.Sound("audio8.wav")
+    audio8_ch = pygame.mixer.Channel(11)
+    audio8.set_volume(1.0)
+
+    audio9 = pygame.mixer.Sound("audio9.wav")
+    audio9_ch = pygame.mixer.Channel(12)
+    audio9.set_volume(1.0)
+
     isPlay = False
 
     print("Play thread Loop")
@@ -70,29 +126,55 @@ def soundHandling(lock,stop_event):
             _buttonUP = buttonUP
             _numberIsNotInsered = numberIsNotInsered
             _wrongNumber = isWrongNumber
+            _soundToPlay = soundToPlay 
         finally:
             #print("Release Params")
             lock.release()
 
         if _buttonUP:
-            if _numberIsNotInsered:
+            if _soundToPlay == Sound.FREE_LINE :
                 if not isPlay:
                     #print("Play freeLine")
                     isPlay = True
-                    playLoop(freeLine_ch,freeLine,waitPlay)
+                    playLoop(freeLine_ch,freeLine,WAIT_PLAY)
                     #print("Finish play freeLine")
                     isPlay = False
                 else:
                     pass
-            else:
+            if _soundToPlay == Sound.NO_SOUND:
                 freeLine_ch.stop()
                 #print("Finish play freeLine")
                 isPlay = False
-            if _wrongNumber:
+            
+            if _soundToPlay == Sound.AUDIO_0:
                 if not isPlay:
                     #print("Play wrongNumber")
                     isPlay = True
-                    playLoop(wrongNumber_ch,wrongNumber,waitPlay)
+                    playLoop(audio0_ch,audio0,WAIT_PLAY)
+                    #print("Finish play wrongNumber")
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_1:
+                if not isPlay:
+                    #print("Play wrongNumber")
+                    isPlay = True
+                    playLoop(audio1_ch,audio1,WAIT_PLAY)
+                    #print("Finish play wrongNumber")
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+            
+            if _soundToPlay == Sound.WRONG_LINE:
+                if not isPlay:
+                    #print("Play wrongNumber")
+                    isPlay = True
+                    playLoop(wrongNumber_ch,wrongNumber,WAIT_PLAY)
                     #print("Finish play wrongNumber")
                     isPlay = False
                 else:
@@ -175,12 +257,14 @@ global targetProject
 global isWrongNumber
 global buttonUP
 global numberIsNotInsered
+global soundToPlay
 
 events = 0
 targetProject = ""
-isWrongNumber = False
+#isWrongNumber = False
 buttonUP = False
 numberIsNotInsered = True
+soundToPlay = Sound.FREE_LINE
 
 stop_event = threading.Event()
 
@@ -195,7 +279,7 @@ try:
             lock_play.acquire()
             try:
                 buttonUP = False
-                isWrongNumber = False
+                soundToPlay = Sound.FREE_LINE
             finally:
                 #print("Release isWrongNumber")
                 lock_play.release()
@@ -203,13 +287,8 @@ try:
             if len(targetProject) != 0:
                 print("reset number %s" % (targetProject))
                 targetProject=""
-                lock_play.acquire()
-                try:
-                    numberIsNotInsered = True
-                finally:
-                    #print("Release numberIsNotInsered")
-                    lock_play.release()
-        elif not isWrongNumber:
+                
+        elif soundToPlay != Sound.WRONG_LINE:
 
             #print("Lock buttonUP")
             lock_play.acquire()
@@ -235,6 +314,7 @@ try:
                     path = ""
                     sendMessage = False
                     number = 0
+                    _soundToPlay = Sound.NO_SOUND
 
                     lenTargetProject = len(targetProject)
                     #print("lenTargetProject %d" % (lenTargetProject))
@@ -252,61 +332,71 @@ try:
                             path = videoPaths(0)
                             sendMessage = True
                             number = 81#Q
+                            _soundToPlay = Sound.AUDIO_0
                         if( targetProject.find("54") > 5):
                             path = videoPaths(1)
                             sendMessage = True
                             number = 87#W
+                            _soundToPlay = Sound.AUDIO_1
                         if( targetProject.find("65") > 5):
                             path = videoPaths(2)
                             sendMessage = True
                             number = 69#E
+                            _soundToPlay = Sound.AUDIO_2
                         if( targetProject.find("76") > 5):
                             path = videoPaths(3)
                             sendMessage = True
                             number = 82#R
+                            _soundToPlay = Sound.AUDIO_3
                         if( targetProject.find("12") > 5):
                             path = videoPaths(4)
                             sendMessage = True
                             number = 84#T
+                            _soundToPlay = Sound.AUDIO_4
                         if( targetProject.find("53") > 5):
                             path = videoPaths(5)
                             sendMessage = True
                             number = 89#Y
+                            _soundToPlay = Sound.AUDIO_5
                         if( targetProject.find("25") > 5):
                             path = videoPaths(6)
                             sendMessage = True
-                            number = 85#U    
+                            number = 85#U
+                            _soundToPlay = Sound.AUDIO_6 
                         if( targetProject.find("21") > 5):
                             path = videoPaths(7)
                             sendMessage = True
                             number = 73#I
+                            _soundToPlay = Sound.AUDIO_7
                         if( targetProject.find("15") > 5):
                             path = videoPaths(8)
                             sendMessage = True
                             number = 65#A
+                            _soundToPlay = Sound.AUDIO_8
                         if( targetProject.find("34") > 5):
                             path = videoPaths(9)
                             sendMessage = True
                             number = 83#S
+                            _soundToPlay = Sound.AUDIO_9
 
                         print("TargetProject reset %s" % (targetProject))  
                         targetProject = ""
-                        lock_play.acquire()
-                        try:
-                            numberIsNotInsered = True
-                        finally:
-                            lock_play.release()
-
+                        
                         if sendMessage:
                             print( "/play " + path[0] )
                             client.send_message("/play", path[0] )
                             client_pc.send_message("/play", number)
+                            lock_play.acquire()
+                            try:
+                                soundToPlay = _soundToPlay
+                            finally:
+                                lock_play.release()
                             threading.Thread(target=event_lock_holder, args=(lock,events,path[1]), name='eventLockHolder').start()
                         else:
                             #print("Lock isWrongNumber")
                             lock_play.acquire()
                             try:
-                                isWrongNumber = True
+                                soundToPlay = Sound.WRONG_LINE
                             finally:
                                 #print("Release isWrongNumber")
                                 lock_play.release()
