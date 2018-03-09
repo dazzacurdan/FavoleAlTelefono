@@ -119,6 +119,8 @@ def soundHandling(lock,stop_event):
 
     isPlay = False
 
+    global soundToPlay
+
     print("Play thread Loop")
     while not stop_event.is_set():
         lock.acquire()
@@ -147,6 +149,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio0_ch,audio0,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -157,6 +164,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio1_ch,audio1,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -167,6 +179,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio2_ch,audio2,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -177,6 +194,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio3_ch,audio3,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -187,6 +209,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio4_ch,audio4,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -197,6 +224,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio5_ch,audio5,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -207,6 +239,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio6_ch,audio6,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -217,6 +254,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio7_ch,audio7,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -227,6 +269,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio8_ch,audio8,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
@@ -237,6 +284,11 @@ def soundHandling(lock,stop_event):
                 if not isPlay:
                     isPlay = True
                     playLoop(audio9_ch,audio9,WAIT_PLAY)
+                    lock.acquire()
+                    try:
+                        soundToPlay = Sound.NO_SOUND 
+                    finally:
+                        lock.release()
                     isPlay = False
                 else:
                     pass
