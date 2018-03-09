@@ -66,6 +66,7 @@ def soundHandling(lock,stop_event):
     buffer = 2048    # number of samples (experiment to get right sound)
     pygame.mixer.init(freq, bitsize, channels, buffer)
     pygame.mixer.init() #Initialize Mixer
+    pygame.mixer.set_num_channels(13)
 
     #https://stackoverflow.com/questions/35805896/multiple-audio-files-running-on-raspberry
     freeLine = pygame.mixer.Sound("LineaLibera.wav")
@@ -124,8 +125,6 @@ def soundHandling(lock,stop_event):
         try:
             #print("Update Params")
             _buttonUP = buttonUP
-            _numberIsNotInsered = numberIsNotInsered
-            _wrongNumber = isWrongNumber
             _soundToPlay = soundToPlay 
         finally:
             #print("Release Params")
@@ -143,15 +142,11 @@ def soundHandling(lock,stop_event):
                     pass
             if _soundToPlay == Sound.NO_SOUND:
                 freeLine_ch.stop()
-                #print("Finish play freeLine")
                 isPlay = False
-            
             if _soundToPlay == Sound.AUDIO_0:
                 if not isPlay:
-                    #print("Play wrongNumber")
                     isPlay = True
                     playLoop(audio0_ch,audio0,WAIT_PLAY)
-                    #print("Finish play wrongNumber")
                     isPlay = False
                 else:
                     pass
@@ -160,16 +155,94 @@ def soundHandling(lock,stop_event):
 
             if _soundToPlay == Sound.AUDIO_1:
                 if not isPlay:
-                    #print("Play wrongNumber")
                     isPlay = True
                     playLoop(audio1_ch,audio1,WAIT_PLAY)
-                    #print("Finish play wrongNumber")
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_2:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio2_ch,audio2,WAIT_PLAY)
                     isPlay = False
                 else:
                     pass
             else:
                 pass
             
+            if _soundToPlay == Sound.AUDIO_3:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio3_ch,audio3,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_4:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio4_ch,audio4,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_5:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio5_ch,audio5,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_6:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio6_ch,audio6,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_7:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio7_ch,audio7,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_8:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio8_ch,audio8,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
+            if _soundToPlay == Sound.AUDIO_9:
+                if not isPlay:
+                    isPlay = True
+                    playLoop(audio9_ch,audio9,WAIT_PLAY)
+                    isPlay = False
+                else:
+                    pass
+            else:
+                pass
+
             if _soundToPlay == Sound.WRONG_LINE:
                 if not isPlay:
                     #print("Play wrongNumber")
@@ -254,16 +327,13 @@ client_pc = udp_client.SimpleUDPClient(args_pc.ip, args_pc.port)
 
 global events
 global targetProject
-global isWrongNumber
 global buttonUP
 global numberIsNotInsered
 global soundToPlay
 
 events = 0
 targetProject = ""
-#isWrongNumber = False
 buttonUP = False
-numberIsNotInsered = True
 soundToPlay = Sound.FREE_LINE
 
 stop_event = threading.Event()
@@ -314,18 +384,18 @@ try:
                     path = ""
                     sendMessage = False
                     number = 0
-                    _soundToPlay = Sound.NO_SOUND
 
                     lenTargetProject = len(targetProject)
-                    #print("lenTargetProject %d" % (lenTargetProject))
-                    if lenTargetProject > 0:
-                        #print("Lock numberIsNotInsered")
+
+                    if(lenTargetProject > 0):
                         lock_play.acquire()
                         try:
-                            numberIsNotInsered = False
+                            soundToPlay = Sound.NO_SOUND
                         finally:
-                            #print("Release numberIsNotInsered")
+                            #print("Release isWrongNumber")
                             lock_play.release()
+
+                    #print("lenTargetProject %d" % (lenTargetProject))
                     if( lenTargetProject == TEL_NUM_LENGTH):
                         print(targetProject)
                         if( targetProject.find("11") > 5):
