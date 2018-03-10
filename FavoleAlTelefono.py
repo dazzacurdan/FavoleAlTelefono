@@ -76,52 +76,54 @@ def soundHandling(lock,stop_event):
     pygame.mixer.init() #Initialize Mixer
     pygame.mixer.set_num_channels(13)
 
+    path = "/home/pi/FavoleAlTelefono/"
+
     #https://stackoverflow.com/questions/35805896/multiple-audio-files-running-on-raspberry
-    freeLine = pygame.mixer.Sound("LineaLibera.wav")
+    freeLine = pygame.mixer.Sound(path+"LineaLibera.wav")
     freeLine_ch = pygame.mixer.Channel(1)
     freeLine.set_volume(1.0)
 
-    wrongNumber = pygame.mixer.Sound("LineaCaduta.wav")
+    wrongNumber = pygame.mixer.Sound(path+"LineaCaduta.wav")
     wrongNumber_ch = pygame.mixer.Channel(2)
     wrongNumber.set_volume(1.0)
 
-    audio0 = pygame.mixer.Sound("audio0.wav")
+    audio0 = pygame.mixer.Sound(path+"audio0.wav")
     audio0_ch = pygame.mixer.Channel(3)
     audio0.set_volume(1.0)
 
-    audio1 = pygame.mixer.Sound("audio1.wav")
+    audio1 = pygame.mixer.Sound(path+"audio1.wav")
     audio1_ch = pygame.mixer.Channel(4)
     audio1.set_volume(1.0)
 
-    audio2 = pygame.mixer.Sound("audio2.wav")
+    audio2 = pygame.mixer.Sound(path+"audio2.wav")
     audio2_ch = pygame.mixer.Channel(5)
     audio2.set_volume(1.0)
 
-    audio3 = pygame.mixer.Sound("audio3.wav")
+    audio3 = pygame.mixer.Sound(path+"audio3.wav")
     audio3_ch = pygame.mixer.Channel(6)
     audio3.set_volume(1.0)
 
-    audio4 = pygame.mixer.Sound("audio4.wav")
+    audio4 = pygame.mixer.Sound(path+"audio4.wav")
     audio4_ch = pygame.mixer.Channel(7)
     audio4.set_volume(1.0)
 
-    audio5 = pygame.mixer.Sound("audio5.wav")
+    audio5 = pygame.mixer.Sound(path+"audio5.wav")
     audio5_ch = pygame.mixer.Channel(8)
     audio5.set_volume(1.0)
 
-    audio6 = pygame.mixer.Sound("audio6.wav")
+    audio6 = pygame.mixer.Sound(path+"audio6.wav")
     audio6_ch = pygame.mixer.Channel(9)
     audio6.set_volume(1.0)
 
-    audio7 = pygame.mixer.Sound("audio7.wav")
+    audio7 = pygame.mixer.Sound(path+"audio7.wav")
     audio7_ch = pygame.mixer.Channel(10)
     audio7.set_volume(1.0)
 
-    audio8 = pygame.mixer.Sound("audio8.wav")
+    audio8 = pygame.mixer.Sound(path+"audio8.wav")
     audio8_ch = pygame.mixer.Channel(11)
     audio8.set_volume(1.0)
 
-    audio9 = pygame.mixer.Sound("audio9.wav")
+    audio9 = pygame.mixer.Sound(path+"audio9.wav")
     audio9_ch = pygame.mixer.Channel(12)
     audio9.set_volume(1.0)
 
@@ -129,6 +131,7 @@ def soundHandling(lock,stop_event):
 
     global soundToPlay
     global buttonUP
+    global loopIsPlay
 
     print("Play thread Loop")
     while not stop_event.is_set():
@@ -155,155 +158,155 @@ def soundHandling(lock,stop_event):
                 freeLine_ch.stop()
                 isPlay = False
             if _soundToPlay == Sound.AUDIO_0:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio0_ch,audio0,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(0)[0] )
+                client_pc.send_message("/play", 81)#Q
+                playLoop(audio0_ch,audio0,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_1:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio1_ch,audio1,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(1)[0] )
+                client_pc.send_message("/play", 87)#Q
+                playLoop(audio1_ch,audio1,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_2:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio2_ch,audio2,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(2)[0] )
+                client_pc.send_message("/play", 69)#Q
+                playLoop(audio2_ch,audio2,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-            
             if _soundToPlay == Sound.AUDIO_3:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio3_ch,audio3,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(3)[0] )
+                client_pc.send_message("/play", 82)#Q
+                playLoop(audio3_ch,audio3,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_4:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio4_ch,audio4,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(4)[0] )
+                client_pc.send_message("/play", 84)#Q
+                playLoop(audio4_ch,audio4,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_5:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio5_ch,audio5,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(5)[0] )
+                client_pc.send_message("/play", 89)#Q
+                playLoop(audio0_ch,audio0,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_6:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio6_ch,audio6,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(6)[0] )
+                client_pc.send_message("/play", 85)#Q
+                playLoop(audio6_ch,audio6,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_7:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio7_ch,audio7,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(7)[0] )
+                client_pc.send_message("/play", 73)#Q
+                playLoop(audio7_ch,audio7,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_8:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio8_ch,audio8,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(8)[0] )
+                client_pc.send_message("/play", 65)#Q
+                playLoop(audio8_ch,audio8,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.AUDIO_9:
-                if not isPlay:
-                    isPlay = True
-                    playLoop(audio9_ch,audio9,WAIT_PLAY)
-                    lock.acquire()
-                    try:
-                        soundToPlay = Sound.NO_SOUND 
-                    finally:
-                        lock.release()
-                    isPlay = False
-                else:
-                    pass
+                print( "/play " + videoPaths(9)[0] )
+                client_pc.send_message("/play", 83)#Q
+                playLoop(audio9_ch,audio9,WAIT_PLAY)
+                lock.acquire()
+                try:
+                    soundToPlay = Sound.NO_SOUND
+                    loopIsPlay = False
+                finally:
+                    lock.release()
+                if(_buttonUP):
+                    print( "Black screen" )
+                    client_pc.send_message("/play", 68)#D
             else:
                 pass
-
             if _soundToPlay == Sound.WRONG_LINE:
                 if not isPlay:
                     #print("Play wrongNumber")
@@ -353,32 +356,23 @@ def event_lock_holder(lock,events,delay):
 
 def videoPaths(x):
     return {
-       0: [globalVideoPath+"/01-ZANUSO.mp4", 59 ],
-       1: [globalVideoPath+"/02-ZANUSO.mp4", 53 ],
-       2: [globalVideoPath+"/03-ZANUSO.mp4", 60 ],
-       3: [globalVideoPath+"/04-ZANUSO.mp4", 67 ],
-       4: [globalVideoPath+"/05-ZANUSO.mp4", 67 ],
-       5: [globalVideoPath+"/06-ZANUSO.mp4", 80 ],
-       6: [globalVideoPath+"/07-ZANUSO.mp4", 87 ],
-       7: [globalVideoPath+"/08-ZANUSO.mp4", 59 ],
-       8: [globalVideoPath+"/09-ZANUSO.mp4", 86 ],
-       9: [globalVideoPath+"/10-ZANUSO.mp4", 52 ],
+       0: [globalVideoPath+"/video0.mp4", 59 ],
+       1: [globalVideoPath+"/video1.mp4", 53 ],
+       2: [globalVideoPath+"/video2.mp4", 60 ],
+       3: [globalVideoPath+"/video3.mp4", 67 ],
+       4: [globalVideoPath+"/video4.mp4", 67 ],
+       5: [globalVideoPath+"/video5.mp4", 80 ],
+       6: [globalVideoPath+"/video6.mp4", 87 ],
+       7: [globalVideoPath+"/video7.mp4", 59 ],
+       8: [globalVideoPath+"/video8.mp4", 86 ],
+       9: [globalVideoPath+"/video9.mp4", 52 ],
     }.get(x, [globalVideoPath+"/00.mp4", 10 ])    # 9 is default if x not found
 
 print('Favole Al Telefono - IdeasBitFactory')
 print('Press Ctrl-C to quit.')
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--ip", default="192.168.1.3",
-    help="The ip of the OSC server")
-parser.add_argument("--port", type=int, default=9000,
-    help="The port the OSC server is listening on")
-args = parser.parse_args()
-
-client = udp_client.SimpleUDPClient(args.ip, args.port)
-
 parser_pc = argparse.ArgumentParser()
-parser_pc.add_argument("--ip", default="192.168.1.79",
+parser_pc.add_argument("--ip", default="192.168.0.79",
     help="The ip of the OSC server")
 parser_pc.add_argument("--port", type=int, default=15000,
     help="The port the OSC server is listening on")
@@ -391,11 +385,13 @@ global targetProject
 global buttonUP
 global numberIsNotInsered
 global soundToPlay
+global loopIsPlay
 
 events = 0
 targetProject = ""
 buttonUP = False
 soundToPlay = Sound.FREE_LINE
+loopIsPlay = False
 
 stop_event = threading.Event()
 
@@ -418,6 +414,10 @@ try:
             if len(targetProject) != 0:
                 print("reset number %s" % (targetProject))
                 targetProject=""
+            
+            if(not loopIsPlay):
+                loopIsPlay = True
+                client_pc.send_message("/play", 80)#Clik on P
                 
         elif soundToPlay != Sound.WRONG_LINE:
 
@@ -514,15 +514,15 @@ try:
                         targetProject = ""
                         
                         if sendMessage:
-                            print( "/play " + path[0] )
-                            client.send_message("/play", path[0] )
-                            client_pc.send_message("/play", number)
+                            #print( "/play " + path[0] )
+                            #client.send_message("/play", path[0] )
+                            #client_pc.send_message("/play", number)
                             lock_play.acquire()
                             try:
                                 soundToPlay = _soundToPlay
                             finally:
                                 lock_play.release()
-                            threading.Thread(target=event_lock_holder, args=(lock,events,path[1]), name='eventLockHolder').start()
+                            #threading.Thread(target=event_lock_holder, args=(lock,events,path[1]), name='eventLockHolder').start()
                         else:
                             #print("Lock isWrongNumber")
                             lock_play.acquire()

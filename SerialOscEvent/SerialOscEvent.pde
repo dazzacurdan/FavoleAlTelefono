@@ -67,7 +67,7 @@ void setup() {
   videoDelay.put(KeyEvent.VK_I,    59000);//73
   videoDelay.put(KeyEvent.VK_A,    86000);//65
   videoDelay.put(KeyEvent.VK_S,    52000);//83
-  videoDelay.put(KeyEvent.VK_D,    43000);
+  videoDelay.put(KeyEvent.VK_D,    43000);//68
   videoDelay.put(KeyEvent.VK_F,    51000);
   videoDelay.put(KeyEvent.VK_G,    60600);
   videoDelay.put(KeyEvent.VK_H,    48000);
@@ -174,10 +174,15 @@ void oscEvent(OscMessage theOscMessage) {
   if( videoID != 25 && videoID != lastID)//tag is valid
   {
     lastID = videoID;
-    thread("lockFunction");
+    //thread("lockFunction");
     try{
     
       keySim.simulate(videoID);
+      if(videoID != KeyEvent.VK_D
+      && videoID != KeyEvent.VK_P)
+      {
+        keySim.simulate(KeyEvent.VK_P);
+      }
     
     }catch(AWTException e){
       println(e);
