@@ -167,7 +167,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -182,7 +182,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -197,7 +197,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -212,7 +212,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -227,7 +227,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -242,7 +242,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -257,7 +257,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -272,7 +272,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -287,7 +287,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -302,7 +302,7 @@ def soundHandling(lock,stop_event):
                     loopIsPlay = False
                 finally:
                     lock.release()
-                if(_buttonUP):
+                if(buttonUP):
                     print( "Black screen" )
                     client_pc.send_message("/play", 68)#D
             else:
@@ -416,8 +416,9 @@ try:
                 targetProject=""
             
             if(not loopIsPlay):
+                print("Launch Loop")
                 loopIsPlay = True
-                client_pc.send_message("/play", 80)#Clik on P
+                client_pc.send_message("/play", 44)#Clik on ,
                 
         elif soundToPlay != Sound.WRONG_LINE:
 
