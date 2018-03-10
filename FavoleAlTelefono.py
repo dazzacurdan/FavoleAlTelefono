@@ -50,10 +50,18 @@ class Sound(Enum):
     NO_SOUND = 12
 
 def playLoop(channel,content,waitPlay):
+    
+    global buttonUP
+
+    loop = True
     channel.play(content)
-    while channel.get_busy():
+    while channel.get_busy() and loop:
         pygame.time.wait(waitPlay)  #  wait in ms
-        #print("...busy")
+        lock.acquire()
+        try:
+            loop = buttonUP 
+        finally:
+            lock.release()
     channel.stop()
 
 def soundHandling(lock,stop_event):
@@ -120,6 +128,7 @@ def soundHandling(lock,stop_event):
     isPlay = False
 
     global soundToPlay
+    global buttonUP
 
     print("Play thread Loop")
     while not stop_event.is_set():
