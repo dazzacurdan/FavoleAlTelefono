@@ -23,7 +23,7 @@ needToPrint = 0
 count = 0
 PIN_INPUT = 2
 BUTTON_PIN = 27
-TEL_NUM_LENGTH = 8
+TEL_NUM_LENGTH = 2
 GPIO.setup(PIN_INPUT, GPIO.IN)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -460,52 +460,52 @@ try:
                     #print("lenTargetProject %d" % (lenTargetProject))
                     if( lenTargetProject == TEL_NUM_LENGTH):
                         print(targetProject)
-                        if( targetProject.find("11") > 5):
+                        if( targetProject.find("11") == 0):
                             path = videoPaths(0)
                             sendMessage = True
                             number = 81#Q
                             _soundToPlay = Sound.AUDIO_0
-                        if( targetProject.find("54") > 5):
+                        if( targetProject.find("12") == 0):
                             path = videoPaths(1)
                             sendMessage = True
                             number = 87#W
                             _soundToPlay = Sound.AUDIO_1
-                        if( targetProject.find("65") > 5):
+                        if( targetProject.find("13") == 0):
                             path = videoPaths(2)
                             sendMessage = True
                             number = 69#E
                             _soundToPlay = Sound.AUDIO_2
-                        if( targetProject.find("76") > 5):
+                        if( targetProject.find("21") == 0):
                             path = videoPaths(3)
                             sendMessage = True
                             number = 82#R
                             _soundToPlay = Sound.AUDIO_3
-                        if( targetProject.find("12") > 5):
+                        if( targetProject.find("22") == 0):
                             path = videoPaths(4)
                             sendMessage = True
                             number = 84#T
                             _soundToPlay = Sound.AUDIO_4
-                        if( targetProject.find("53") > 5):
+                        if( targetProject.find("23") == 0):
                             path = videoPaths(5)
                             sendMessage = True
                             number = 89#Y
                             _soundToPlay = Sound.AUDIO_5
-                        if( targetProject.find("25") > 5):
+                        if( targetProject.find("31") == 0):
                             path = videoPaths(6)
                             sendMessage = True
                             number = 85#U
                             _soundToPlay = Sound.AUDIO_6 
-                        if( targetProject.find("21") > 5):
+                        if( targetProject.find("32") == 0):
                             path = videoPaths(7)
                             sendMessage = True
                             number = 73#I
                             _soundToPlay = Sound.AUDIO_7
-                        if( targetProject.find("15") > 5):
+                        if( targetProject.find("33") == 0):
                             path = videoPaths(8)
                             sendMessage = True
                             number = 65#A
                             _soundToPlay = Sound.AUDIO_8
-                        if( targetProject.find("34") > 5):
+                        if( targetProject.find("34") == 0):
                             path = videoPaths(9)
                             sendMessage = True
                             number = 83#S
