@@ -7,6 +7,8 @@ import RPi.GPIO as GPIO, time
 from datetime import datetime
 from enum import Enum
 
+import wiringpi
+
 import pygame
 from pygame import mixer
 
@@ -23,7 +25,7 @@ needToPrint = 0
 count = 0
 PIN_INPUT = 2
 BUTTON_PIN = 27
-TEL_NUM_LENGTH = 2
+TEL_NUM_LENGTH = 5
 GPIO.setup(PIN_INPUT, GPIO.IN)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -235,7 +237,7 @@ def soundHandling(lock,stop_event):
             if _soundToPlay == Sound.AUDIO_5:
                 print( "/play " + videoPaths(5)[0] )
                 client_pc.send_message("/play", 89)#Q
-                playLoop(audio0_ch,audio0,WAIT_PLAY)
+                playLoop(audio5_ch,audio5,WAIT_PLAY)
                 lock.acquire()
                 try:
                     soundToPlay = Sound.NO_SOUND
@@ -328,7 +330,8 @@ def soundHandling(lock,stop_event):
     print("Play thread Loop exit")
 
 def millis():
-	return datetime.now().microsecond
+	return wiringpi.micros()
+    #return datetime.now().microsecond
     #return int(round(time.time() * 1000))
 
 def event_lock_holder(lock,events,delay):
